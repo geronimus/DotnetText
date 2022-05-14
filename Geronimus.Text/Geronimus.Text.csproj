@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>Geronimus.Text</PackageId>
+    <Version>0.1.0-alpha</Version>
+    <FileVersion>0.1.0.0</FileVersion>
+    <Authors>Graham Brown</Authors>
+    <Copyright>© Graham Brown 2022</Copyright>
+    <Company>geronimus</Company>
+    <Title>Geronimus.Text</Title>
+    <Description>Reusable logic for handling text values.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
