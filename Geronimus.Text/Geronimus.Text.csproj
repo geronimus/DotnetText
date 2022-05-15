@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <PackageId>Geronimus.Text</PackageId>
-    <Version>0.1.1-alpha</Version>
-    <FileVersion>0.1.1.0</FileVersion>
+    <Version>0.1.2-alpha</Version>
+    <FileVersion>0.1.2.0</FileVersion>
     <Authors>Graham Brown</Authors>
     <Copyright>© Graham Brown 2022</Copyright>
     <Company>geronimus</Company>
@@ -12,6 +12,8 @@
     <PackageProjectUrl>https://github.com/geronimus/DotnetText</PackageProjectUrl>
     <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/geronimus/DotnetText.git</RepositoryUrl> 
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup>
