@@ -9,8 +9,8 @@
     <Company>geronimus</Company>
     <Title>Geronimus.Text</Title>
     <Description>Reusable logic for handling text values.</Description>
+    <PackageProjectUrl>https://github.com/geronimus/DotnetText</PackageProjectUrl>
     <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
-    <PackageLicenseFile>LICENCE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
