@@ -2,13 +2,16 @@
 
   <PropertyGroup>
     <PackageId>Geronimus.Text</PackageId>
-    <Version>0.1.0-alpha</Version>
-    <FileVersion>0.1.0.0</FileVersion>
+    <Version>0.1.1-alpha</Version>
+    <FileVersion>0.1.1.0</FileVersion>
     <Authors>Graham Brown</Authors>
     <Copyright>© Graham Brown 2022</Copyright>
     <Company>geronimus</Company>
     <Title>Geronimus.Text</Title>
     <Description>Reusable logic for handling text values.</Description>
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
+    <PackageLicenseFile>LICENCE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -16,5 +19,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../LICENCE" Pack="true" PackagePath=""/>
+    <None Include="../README.md" Pack="true" PackagePath=""/>
+  </ItemGroup>
 
 </Project>
