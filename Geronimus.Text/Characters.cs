@@ -157,7 +157,7 @@ public static class Characters
         public const string FormFeed = "\u000c";
         public const string LineFeed = "\n";
         public const string LineSeparator = "\u2028";
-        public const string NextLine = "";
+        public const string NextLine = "\u0085";
         public const string ParagraphSeparator = "\u2029";
         public const string VerticalTab = "\u000b";
         public const string Unix = LineFeed;
@@ -169,6 +169,7 @@ public static class Characters
                 FormFeed,
                 LineFeed,
                 LineSeparator,
+                NextLine,
                 ParagraphSeparator,
                 VerticalTab,
                 Windows
