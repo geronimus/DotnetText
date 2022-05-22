@@ -10,6 +10,7 @@ public interface ICharacterSeq : IEnumerable<string>
     public bool IsEmpty { get; }
     public int Length { get; }
     public ICharacterSeq Tail { get; }
+    public string Text { get; }
 
     public string CharacterAt( int index );
 
@@ -100,11 +101,13 @@ public static class CharacterSeq
 
     private class EmptyCharacterSeq : ICharacterSeq, IEquatable<ICharacterSeq>
     {
-        public string this[ int index ] => CharacterAt( index );
         public string Head => string.Empty;
         public bool IsEmpty => true;
         public int Length => 0;
         public ICharacterSeq Tail => this;
+        public string Text => "";
+
+        public string this[ int index ] => CharacterAt( index );
 
         public string CharacterAt( int index )
         {
@@ -147,7 +150,7 @@ public static class CharacterSeq
             return CharacterSeq.Empty;
         }
 
-        public override string ToString()
+        public override string? ToString()
         {
             return string.Empty;
         }
@@ -201,6 +204,10 @@ public static class CharacterSeq
                     return CharacterSeq.Empty;
                 }
             }
+        }
+        public string Text
+        {
+            get { return _text; }
         }
 
         public string CharacterAt( int index )

@@ -40,6 +40,18 @@ A library of utility functions to help you work with some of the unpredictable t
             - Empty
         - Static Methods
             - OfText
+    - [NameKey](#NameKey-Class)
+        - Instance Properties
+            - Context
+            - HasContext
+            - IsRoot
+            - LeafName
+            - NameSeq
+            - TextValue
+        - Instance Methods
+            - Equals
+            - GetHashCode
+            - ToString
 
 ---
 
@@ -332,6 +344,8 @@ This function removes all characters included in the `Spaces` set from both the 
 
 The spacing characters "within" the text are left intact, but we guarantee that neither the beginning nor the end of the text value will be a spacing character.
 
+_Please note that this method relies on_ `CharacterSeq` _internally, meaning it has the side-effect of normalizing the output. (See_ `string.Normalize()` _in the .NET documentation.)_
+
 ## CloseShaveEnd
 
 ```c#
@@ -344,6 +358,8 @@ This function is similar to `string.TrimRight()`, but the range of characters it
 
 This function removes all characters included in the `Spaces` set from the end of a text value, meaning its final character will not be a spacing character.
 
+_Please note that this method relies on_ `CharacterSeq` _internally, meaning it has the side-effect of normalizing the output. (See_ `string.Normalize()` _in the .NET documentation.)_
+
 ## CloseShaveStart
 
 ```c#
@@ -355,6 +371,8 @@ public static string CloseShaveStart( string text )
 This function is similar to `string.TrimLeft()`, but the range of characters it removes is broader.
 
 This function removes all characters included in the `Spaces` set from the beginning of a text value, meaning its initial character will not be a spacing character.
+
+_Please note that this method relies on_ `CharacterSeq` _internally, meaning it has the side-effect of normalizing the output. (See_ `string.Normalize()` _in the .NET documentation.)_
 
 ## NormalizeLineEndings
 
@@ -406,8 +424,257 @@ Returns the empty character sequence, containing no characters.
 public static ICharacterSeq OfText( string text )
 ```
 
+### Definition
+
 Constructs a character sequence from the provided text argument.
 
 (Remember that any `string` values containing composite characters will be normalized.)
+
+---
+
+# NameKey Class
+
+## Definition
+
+```c#
+public class NameKey : IEquatable<NameKey>
+```
+
+A `NameKey` is intended to be an identifier for something that is both unique and meaningful.
+
+It takes the form of a number of text segments (names) separated by the slash character, like this: `category/sub-category/local-name`
+
+If this reminds you of a `namespace`, that is not a coincidence.
+
+The individual name segments may contain spaces, but spacing characters at the beginning or end will be removed. Name segments may not contain line end characters. And any non-printable control characters will also be removed.
+
+Each `NameKey` has a `TextValue` property, which is considered to be its canonical representation. `NameKey`s with the same `TextValue` compare as equal. `NameKey`s are case-sensitive, just like `string` values. However, name segment values will be normalized. (See `string.Normalize()` in the .NET documentation.)
+
+Each `NameKey` has properties called `Context` and `LeafName`. Its `Context` is another `NameKey` made up of all the name segments that come before the final one. And `LeafName` is the `string` representation of the final name. Therefore, in the `NameKey` value `"local/languages/French"`, the `Context` is the `NameKey` of `"local/languages"` anf the `LeafName` is the `string` `"French"`.
+
+If a `NameKey` is composed of only one name segment, it does not have a `Context`, and attempting to access its `Context` will throw an `InvalidOperationException`. In order to avoid this exception, you can check its `HasContext` property. Conversely, the `IsRoot` property will return `true` for `NameKey` values with only a single name segment. 
+
+A sequence of names separated by slashes may remind you of a Unix-style file path. However, `NameKey`s are not permitted to begin with a slash. Also, note that in `NameKey`s, the slash cannot be escaped by a backslash character.
+
+`NameKey`s are effectively immutable. Once one is created, it cannot be altered.
+
+## Constructor
+
+```c#
+public NameKey( params string[] names )
+```
+
+You can pass in any number of names, subject to the rules described above.
+
+If any segment contains a slash, it will be parsed as two names.
+
+### Example
+
+```c#
+// The following NameKeys are equivalent:
+
+NameKey example1 = new NameKey( "local", "languages", "French" );
+// => NameKey { local/languages/French }
+
+NameKey example2 = new NameKey( "local/languages", "French" );
+// => NameKey { local/languages/French }
+
+NameKey example3 = new NameKey( "local/languages/French" );
+// => NameKey { local/languages/French }
+```
+
+## Instance Properties
+
+## Context
+
+```c#
+public NameKey Context
+```
+
+Returns the `NameKey` of all name segments that come before the final segment. (The `LeafName`.)
+
+### Example
+
+```c#
+NameKey spumoni = new NameKey( "desserts/spumoni" );
+
+spumoni.IsRoot; // => false
+spumoni.HasContext; // => true
+spumoni.Context; // => NameKey { desserts }
+spumoni.LeafName; // => "spumoni"
+
+// You cannot access the Context of the root name:
+NameKey menu = spumoni.Context;
+
+menu.IsRoot; // => true
+menu.HasContext; // => false
+menu.Context; // => InvalidOperationException
+```
+
+## HasContext
+
+```c#
+public bool HasContext
+```
+
+Returns `true` if this is a `NameKey` made up of multiple name segments. (Any segments preceding the final `LeafName` are the name's `Context`.)
+
+### Example
+
+```c#
+NameKey dailySpecial = new NameKey( "specials/Pescado Veracruz" );
+NameKey menuSection = dailySpecial.Context;
+
+dailySpecial.HasContext; // => true
+
+menuSection.TextValue; // => "specials"
+menuSection.IsRoot; // => true
+menuSection.TextValue == menuSection.LeafName; // => true
+menuSection.HasContext; // => false
+```
+
+## IsRoot
+
+```c#
+public bool IsRoot
+```
+
+If a `NameKey` is the root name, it means it is made up of only a single name and does not have a `Context` property.
+
+### Example
+
+```c#
+NameKey dailySpecial = new NameKey( "specials/Pescado Veracruz" );
+NameKey menuSection = dailySpecial.Context;
+
+dailySpecial.IsRoot; // => false
+
+menuSection.IsRoot; // => true
+menuSection.TextValue == menuSection.LeafName; // => true
+menuSection.TextValue; // => "specials"
+menuSection.HasContext; // => false
+menuSection.Context; // => InvalidOperationException
+```
+
+## LeafName
+
+```c#
+public string LeafName
+```
+
+Returns the text value of the final name in the sequence that makes up the `NameKey`.
+
+### Example
+
+```c#
+NameKey myUser = new NameKey( "users/me" );
+
+myUser.LeafName; // => "me"
+
+NameKey justMe = new NameKey( "me" );
+
+justMe.IsRoot; // => true
+justMe.HasContext // => false
+justMe.LeafName; // => "me"
+justMe.LeafName == justMe.TextValue; // => true
+```
+
+## NameSeq
+
+```c#
+public List<string> NameSeq
+```
+
+Returns the sequence of names that make up the `NameKey` as a `List` of `string` values.
+
+### Example
+
+```c#
+NameKey myColour = new NameKey( "user/colours/Ultramarine" );
+
+myColour.NameSeq[ 0 ]; // => "user"
+myColour.NameSeq[ 1 ]; // => "colours"
+myColour.NameSeq[ 2 ]; // => "Ultramarine"
+```
+
+## TextValue
+
+```c#
+public string TextValue
+```
+
+Returns the canonical text representation of the `NameKey`, which is a single `string` value where each segment is separated from the next by a slash character. (`"/"`)
+
+### Example
+
+```c#
+NameKey song = new NameKey(
+    "music",
+    "folk",
+    "20th Century",
+    "Doo-Wop",
+    "Only You"
+);
+
+song.TextValue; // => "music/folk/20th Century/Doo-Wop/Only You"
+```
+
+## Instance Methods
+
+## Equals
+
+```c#
+public override bool Equals( object? obj )
+```
+
+Determines whether two object instances are equivalent.
+
+Two `NameKey` values are judged to be equivalent if their `TextValue` properties are equivalent.
+
+This comparison works exactly like `string` comparison, and it is therefore case-sensitive.
+
+However, please note that `NameKey`s normalize the text value of each name segement, so that even if the text is entered using combining diacritic characters, `NameKey` segments will store only the resulting canonical Unicode character, and therefore some `string`s that are strictly different will result in the same `NameKey` value. (See `string.Normalize()` in the .NET documentation.)
+
+### Example
+
+```c#
+new NameKey( "local/languages/Klingon" ).Equals(
+    new NameKey( "local", "languages", "Klingon" )
+); // => true
+
+// However, note the case-sensitivity:
+new NameKey( "local/languages/Klingon" ).Equals(
+    new NameKey( "local", "languages", "klingon" )
+); // => false
+
+// String normalization means that some differently-produced name segments will
+// result in identical NameKeys:
+new NameKey( "local/languages/franc\u0327ais" ).Equals(
+    new NameKey( "local/languages/fran\u00e7ais" )
+); // => true
+```
+
+## GetHashCode
+
+```c#
+public override int GetHashCode()
+```
+
+Effectively, this method returns the same hash value as the `NameKey`'s `TextValue`.
+
+## ToString
+
+```c#
+public override string ToString()
+```
+
+Returns a value combining the type name (`NameKey`) with the instance's `TextValue`.
+
+## Example
+
+```c#
+new NameKey( "system/settings/screenWidth" ).ToString();
+// => "NameKey { system/settings/screenWidth }"
+```
 
 ---
