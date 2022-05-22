@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <PackageId>Geronimus.Text</PackageId>
-    <Version>0.1.2-alpha</Version>
-    <FileVersion>0.1.2.0</FileVersion>
+    <Version>0.1.3-alpha</Version>
+    <FileVersion>0.1.3.0</FileVersion>
     <Authors>Graham Brown</Authors>
     <Copyright>© Graham Brown 2022</Copyright>
     <Company>geronimus</Company>
@@ -26,5 +26,16 @@
     <None Include="../LICENCE" Pack="true" PackagePath=""/>
     <None Include="../README.md" Pack="true" PackagePath=""/>
   </ItemGroup>
+
+<!-- Required for Nuget Source Link / Health Check -->
+<PropertyGroup>
+  <IncludeSymbols>true</IncludeSymbols>
+  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  <Deterministic>true</Deterministic>
+</PropertyGroup>
+
+<ItemGroup>
+  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+</ItemGroup>
 
 </Project>
