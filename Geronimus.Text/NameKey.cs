@@ -47,6 +47,19 @@ public class NameKey : IEquatable<NameKey>
     public string TextValue => _textValue;
 
     // Methods:
+    public NameKey Append( string childName )
+    {
+        return new NameKey( this.TextValue, childName );
+    }
+
+    public NameKey Concat( NameKey suffixNameKey )
+    {
+        if ( suffixNameKey == null )
+            throw new ArgumentNullException( nameof( suffixNameKey ) );
+        else
+            return this.Append( suffixNameKey.TextValue );
+    }
+
     public override bool Equals( object? obj ) => Equals( obj as NameKey );
 
     public bool Equals( NameKey? that )
@@ -152,7 +165,7 @@ public class NameKey : IEquatable<NameKey>
                             $"{ nameof( names ) }[ { item } ]"
                         );
                     }
-                    else
+                    else if ( names[ item ].Contains( _separator ) )
                     {
                         string[] splitNames = names[ item ].Split(
                             _separator,
@@ -163,6 +176,10 @@ public class NameKey : IEquatable<NameKey>
                         {
                             result.Add( splitNameItem );
                         }
+                    }
+                    else
+                    {
+                        result.Add( names[ item ] );
                     }
                 }
 

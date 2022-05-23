@@ -49,6 +49,8 @@ A library of utility functions to help you work with some of the unpredictable t
             - NameSeq
             - TextValue
         - Instance Methods
+            - Append
+            - Concat
             - Equals
             - GetHashCode
             - ToString
@@ -620,6 +622,39 @@ song.TextValue; // => "music/folk/20th Century/Doo-Wop/Only You"
 ```
 
 ## Instance Methods
+
+## Append
+
+```c#
+public NameKey Append( string childName )
+```
+
+Given a `childName` argument, this function returns a new `NameKey` whose `.Context` is the current `NameKey`, and whose `.LeafName` is the provided `childName`. 
+
+### Example
+
+```c#
+NameKey category = new NameKey( "films/mystery" );
+
+category.Append( "Vertigo" ); // => NameKey { films/mystery/Vertigo }
+```
+
+## Concat
+
+```c#
+public NameKey Concat( NameKey suffixNameKey )
+```
+
+Combines the current `NameKey` and a `suffixNameKey` to form a new `NameKey` with the entire name sequence of the suffix appended to the name sequence of the current `NameKey`.
+
+### Example
+
+```c#
+NameKey prefix = new NameKey( "user/lists/street type" );
+NameKey suffix = new NameKey( "items/Avenue" );
+
+prefix.Concat( suffix ); // => NameKey { user/lists/street type/items/Avenue }
+```
 
 ## Equals
 
