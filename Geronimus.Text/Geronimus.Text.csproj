@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <PackageId>Geronimus.Text</PackageId>
-    <Version>0.1.4-alpha</Version>
-    <FileVersion>0.1.4.0</FileVersion>
+    <Version>0.1.5-alpha</Version>
+    <FileVersion>0.1.5.0</FileVersion>
     <Authors>Graham Brown</Authors>
     <Copyright>© Graham Brown 2022</Copyright>
     <Company>geronimus</Company>
@@ -31,8 +31,9 @@
 <PropertyGroup>
   <IncludeSymbols>true</IncludeSymbols>
   <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-  <Deterministic>true</Deterministic>
   <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  <Deterministic>true</Deterministic>
+  <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 </PropertyGroup>
 
 <ItemGroup>
