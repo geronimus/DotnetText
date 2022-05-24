@@ -99,7 +99,7 @@ public static class CharacterSeq
         }
     }
 
-    private class EmptyCharacterSeq : ICharacterSeq, IEquatable<ICharacterSeq>
+    private sealed class EmptyCharacterSeq : ICharacterSeq, IEquatable<ICharacterSeq>
     {
         public string Head => string.Empty;
         public bool IsEmpty => true;
@@ -156,7 +156,7 @@ public static class CharacterSeq
         }
     }
 
-    private class ValuedCharacterSeq : ICharacterSeq, IEquatable<ICharacterSeq>
+    private sealed class ValuedCharacterSeq : ICharacterSeq, IEquatable<ICharacterSeq>
     {
         private List<CharacterPosition> _characters = new();
         private string _head = string.Empty;

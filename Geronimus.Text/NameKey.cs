@@ -1,6 +1,6 @@
 namespace Geronimus.Text;
 
-public class NameKey : IEquatable<NameKey>
+public sealed class NameKey : IEquatable<NameKey>
 { 
     // Fields:
     private NameKey? _contextNameKey = null;
